@@ -1,5 +1,7 @@
 import './styles/global.css';
 import { $, showNotification } from './modules/dom-helpers.js';
+
+const INITIAL_HTML = '<!doctype html>\n' + document.documentElement.outerHTML;
 import { initVideoLoader } from './modules/video-loader.js';
 import { initPlayerControls } from './modules/player-controls.js';
 import { initFrameStepper } from './modules/frame-stepper.js';
@@ -22,6 +24,7 @@ async function init() {
 
   $('#btn-export').addEventListener('click', handleExport);
   $('#btn-clear').addEventListener('click', handleClear);
+  $('#btn-download-offline').addEventListener('click', handleDownloadOffline);
 
   if (existingCaptures.length > 0) {
     updateCaptureCount();
@@ -114,6 +117,18 @@ async function handleClear() {
   updateButtonStates();
   resetMemoryWarnings();
   showNotification('已清除全部截圖', 'info');
+}
+
+function handleDownloadOffline() {
+  const blob = new Blob([INITIAL_HTML], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'video-frame-grabber.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 function updateCaptureCount() {
