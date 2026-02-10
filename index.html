@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Frame Grabber</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header id="header">
+        <div class="header-left">
+          <h1>Video Frame Grabber</h1>
+        </div>
+        <div class="header-right">
+          <span id="capture-count" class="badge" aria-label="已截取幀數">0 幀</span>
+          <button id="btn-export" disabled aria-label="匯出 ZIP">匯出 ZIP</button>
+          <button id="btn-clear" disabled aria-label="清除全部截圖">清除全部</button>
+        </div>
+      </header>
+
+      <!-- Drop zone / Video container -->
+      <main id="main-area">
+        <div id="drop-zone" aria-label="拖放影片檔案至此處">
+          <div class="drop-content">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <p>拖放影片檔案至此處</p>
+            <p class="drop-hint">或點擊選擇檔案</p>
+            <p class="privacy-note">所有處理均在本機完成，影片不會上傳</p>
+          </div>
+          <input type="file" id="file-input" accept="video/*" class="sr-only" aria-label="選擇影片檔案" />
+        </div>
+
+        <div id="video-container" class="hidden">
+          <video id="video" playsinline></video>
+          <div id="flash-overlay" aria-hidden="true"></div>
+        </div>
+      </main>
+
+      <!-- Player controls -->
+      <div id="controls" class="hidden">
+        <div class="seek-row">
+          <input type="range" id="seek-bar" min="0" max="100" step="any" value="0" aria-label="影片進度" />
+        </div>
+        <div class="controls-row">
+          <div class="controls-left">
+            <button id="btn-prev-frame" aria-label="上一幀 (←)" disabled>⏮</button>
+            <button id="btn-play" aria-label="播放/暫停 (Space)" disabled>▶</button>
+            <button id="btn-next-frame" aria-label="下一幀 (→)" disabled>⏭</button>
+            <span id="time-display" class="time-display">00:00.000 / 00:00.000</span>
+          </div>
+          <div class="controls-right">
+            <span id="fps-display" class="fps-display">-- FPS</span>
+            <button id="btn-capture" aria-label="截圖 (S)" disabled>截圖</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thumbnail strip -->
+      <div id="thumbnail-strip" class="hidden">
+        <div id="thumbnail-list" role="list" aria-label="已截取的幀"></div>
+      </div>
+
+      <!-- Notification area -->
+      <div id="notifications" aria-live="polite"></div>
+    </div>
+
+    <!-- Keyboard shortcuts hint -->
+    <div id="shortcuts-hint" class="hidden">
+      <span>Space: 播放/暫停</span>
+      <span>← →: 逐幀</span>
+      <span>S: 截圖</span>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
