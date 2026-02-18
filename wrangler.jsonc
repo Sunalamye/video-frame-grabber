@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "video-frame-grabber",
+  "compatibility_date": "2025-01-01",
+  "account_id": "41f4a17d22ebd3db379c02b15a4958fc",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
+    "html_handling": "drop-trailing-slash"
+  }
+}
