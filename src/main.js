@@ -14,6 +14,7 @@ import { checkMemory, resetMemoryWarnings } from './modules/memory-monitor.js';
 
 let videoReady = false;
 let isCapturing = false;
+let firstLoad = true;
 
 async function init() {
   await openDB();
@@ -25,6 +26,7 @@ async function init() {
   $('#btn-export').addEventListener('click', handleExport);
   $('#btn-clear').addEventListener('click', handleClear);
   $('#btn-download-offline').addEventListener('click', handleDownloadOffline);
+  $('#btn-change-video').addEventListener('click', () => $('#file-input').click());
 
   if (existingCaptures.length > 0) {
     updateCaptureCount();
@@ -38,6 +40,7 @@ function onVideoLoaded(video) {
   $('#controls').classList.remove('hidden');
   $('#thumbnail-strip').classList.remove('hidden');
   $('#shortcuts-hint').classList.remove('hidden');
+  $('#btn-change-video').classList.remove('hidden');
 
   const buttons = ['#btn-play', '#btn-prev-frame', '#btn-next-frame', '#btn-capture'];
   buttons.forEach(sel => $(sel).removeAttribute('disabled'));
@@ -49,11 +52,12 @@ function onVideoLoaded(video) {
     updateButtonStates();
   });
 
-  hydrateExistingThumbnails();
-
-  initKeyboardShortcuts(() => handleCapture(video));
-
-  $('#btn-capture').addEventListener('click', () => handleCapture(video));
+  if (firstLoad) {
+    hydrateExistingThumbnails();
+    initKeyboardShortcuts(() => handleCapture(video));
+    $('#btn-capture').addEventListener('click', () => handleCapture(video));
+    firstLoad = false;
+  }
 
   videoReady = true;
 

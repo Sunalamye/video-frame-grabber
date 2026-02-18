@@ -5,11 +5,15 @@ import { updateSeekBar } from './player-controls.js';
 let video;
 let detectedFPS = DEFAULT_FPS;
 let isStepping = false;
+let initialized = false;
 
 export function initFrameStepper(videoEl) {
   video = videoEl;
-  $('#btn-prev-frame').addEventListener('click', stepBackward);
-  $('#btn-next-frame').addEventListener('click', stepForward);
+  if (!initialized) {
+    $('#btn-prev-frame').addEventListener('click', stepBackward);
+    $('#btn-next-frame').addEventListener('click', stepForward);
+    initialized = true;
+  }
   detectFPS(videoEl);
 }
 

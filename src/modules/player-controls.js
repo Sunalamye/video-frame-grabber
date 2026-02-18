@@ -5,6 +5,7 @@ let seekBar;
 let timeDisplay;
 let btnPlay;
 let isSeeking = false;
+let initialized = false;
 
 export function initPlayerControls(videoEl) {
   video = videoEl;
@@ -15,23 +16,26 @@ export function initPlayerControls(videoEl) {
   seekBar.max = video.duration;
   seekBar.value = 0;
 
-  video.addEventListener('timeupdate', onTimeUpdate);
-  const iconPlay = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.75v14.5a.75.75 0 001.15.63l11.5-7.25a.75.75 0 000-1.26L7.15 4.12A.75.75 0 006 4.75z"/></svg>';
-  const iconPause = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
-  video.addEventListener('play', () => { btnPlay.innerHTML = iconPause; });
-  video.addEventListener('pause', () => { btnPlay.innerHTML = iconPlay; });
-  video.addEventListener('ended', () => { btnPlay.innerHTML = iconPlay; });
+  if (!initialized) {
+    video.addEventListener('timeupdate', onTimeUpdate);
+    const iconPlay = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.75v14.5a.75.75 0 001.15.63l11.5-7.25a.75.75 0 000-1.26L7.15 4.12A.75.75 0 006 4.75z"/></svg>';
+    const iconPause = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+    video.addEventListener('play', () => { btnPlay.innerHTML = iconPause; });
+    video.addEventListener('pause', () => { btnPlay.innerHTML = iconPlay; });
+    video.addEventListener('ended', () => { btnPlay.innerHTML = iconPlay; });
 
-  seekBar.addEventListener('input', () => {
-    isSeeking = true;
-    video.currentTime = Number(seekBar.value);
-  });
+    seekBar.addEventListener('input', () => {
+      isSeeking = true;
+      video.currentTime = Number(seekBar.value);
+    });
 
-  seekBar.addEventListener('change', () => {
-    isSeeking = false;
-  });
+    seekBar.addEventListener('change', () => {
+      isSeeking = false;
+    });
 
-  btnPlay.addEventListener('click', togglePlay);
+    btnPlay.addEventListener('click', togglePlay);
+    initialized = true;
+  }
 
   updateTimeDisplay();
 }

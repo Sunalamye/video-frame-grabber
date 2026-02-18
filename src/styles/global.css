@@ -165,6 +165,29 @@ input[type="range"]::-moz-range-thumb {
   background-clip: text;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#btn-change-video {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-text-muted);
+  letter-spacing: 0.2px;
+}
+
+#btn-change-video:hover {
+  background: var(--color-surface-alt);
+  border-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
 .header-right {
   display: flex;
   align-items: center;
