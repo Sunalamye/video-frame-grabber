@@ -1,6 +1,5 @@
 import { downloadZip } from 'client-zip';
 import { getAllThumbnails, getFullBlob } from './storage.js';
-import { formatTimeFilename } from './dom-helpers.js';
 
 function getDefaultName() {
   const now = new Date();
@@ -21,17 +20,18 @@ export async function exportZip() {
   const name = prompt('請輸入 ZIP 檔案名稱：', defaultName);
   if (name === null) return; // 使用者取消
 
-  const fileName = (name.trim() || defaultName) + '.zip';
+  const baseName = name.trim() || defaultName;
+  const fileName = baseName + '.zip';
+  const padLen = Math.max(3, String(thumbnails.length).length);
 
   async function* generateFiles() {
     for (let i = 0; i < thumbnails.length; i++) {
       const thumb = thumbnails[i];
       const blob = await getFullBlob(thumb.id);
       if (blob) {
-        const idx = String(i + 1).padStart(4, '0');
-        const timeStr = formatTimeFilename(thumb.timestamp);
+        const idx = String(i + 1).padStart(padLen, '0');
         yield {
-          name: `frame_${idx}_${timeStr}.png`,
+          name: `${baseName}_${idx}.png`,
           input: blob,
         };
       }
